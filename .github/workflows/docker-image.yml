@@ -1,0 +1,32 @@
+name: Docker Image CI
+
+on:
+  workflow_dispatch:
+jobs:
+  Build_and_Publish:
+    runs-on: ubuntu-latest
+
+    env:
+      IMAGE_NAME: quay.io/davidsec/github-runner
+
+    steps:
+      - name: 📥 Checkout source
+        uses: actions/checkout@v4
+
+      - name: 🕒 Generate timestamp tag
+        id: timestamp
+        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
+
+      - name: 🔐 Log in to Quay.io
+        run: echo "${{ secrets.QUAY_PASSWORD }}" | docker login quay.io -u "${{ secrets.QUAY_USERNAME }}" --password-stdin
+
+      - name: 🏗️ Build Docker image
+        run: docker build -t $IMAGE_NAME:$IMAGE_TAG .
+
+      - name: 🚀 Push image to Quay.io
+        run: docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: 📌 Also tag as latest (optional)
+        run: |
+          docker tag $IMAGE_NAME:$IMAGE_TAG $IMAGE_NAME:latest
+          docker push $IMAGE_NAME:latest
