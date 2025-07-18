@@ -39,12 +39,13 @@ quay.io/davidsec/github-runner:latest
 docker run -d \
   -e REPO_URL=https://github.com/YOUR_ORG/YOUR_REPO \
   -e RUNNER_TOKEN=YOUR_RUNNER_TOKEN \
+  -e RUNNER_NAME=YOUR_RUNNER_NAME \
   -v /var/run/docker.sock:/var/run/docker.sock \
   --name github-runner \
   quay.io/davidsec/github-runner:latest
 ```
 
-> ✅ Replace `REPO_URL` and `RUNNER_TOKEN` with your actual values.
+> ✅ Replace `REPO_URL`, `RUNNER_TOKEN` and `RUNNER_NAME` with your actual values.
 
 ---
 
@@ -62,10 +63,11 @@ docker run -d --privileged \
 
 ## 🧾 Environment Variables
 
-| Variable      | Required | Description                            |
-|---------------|----------|----------------------------------------|
-| `REPO_URL`    | ✅       | Your GitHub repo URL                   |
-| `RUNNER_TOKEN`| ✅       | GitHub registration token              |
+| Name           | Required | Default              | Description                                                            |
+| -------------- | -------- | -------------------- | ---------------------------------------------------------------------- |
+| `REPO_URL`     | ✅ Yes    | —                    | Full URL of the GitHub repository where the runner will be registered. |
+| `RUNNER_TOKEN` | ✅ Yes    | —                    | GitHub registration token for the runner.                              |
+| `RUNNER_NAME`  | ❌ No     | Container `hostname` | Optional custom name for the runner.                                   |
 
 ---
 

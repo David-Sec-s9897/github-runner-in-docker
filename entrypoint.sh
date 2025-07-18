@@ -16,11 +16,13 @@ if [ -z "$REPO_URL" ] || [ -z "$RUNNER_TOKEN" ]; then
   exit 1
 fi
 
+RUNNER_NAME="${RUNNER_NAME:-$(hostname)}"
+
 cd /actions-runner
 
 # Configure GitHub runner as the non-root user
 echo "⚙️ Configuring GitHub runner as 'runner' user..."
-su - runner -c "cd /actions-runner && ./config.sh --unattended --url $REPO_URL --token $RUNNER_TOKEN --name $(hostname) --work _work"
+su - runner -c "cd /actions-runner && ./config.sh --unattended --url $REPO_URL --token $RUNNER_TOKEN --name $RUNNER_NAME --work _work"
 
 # Run the GitHub runner as non-root
 echo "🚀 Starting GitHub Actions runner as 'runner'..."
